@@ -39,16 +39,24 @@ def home():
 
 @app.route('/api/check_image', methods=['POST', 'GET'])
 def api_img_check():
-    print("hii")
     data = request.get_json()
-    flag = {'flag': check_image(data['image_url'])}
+    if check_image(data['image_url']):
+        flag = {'flag': 'Yes' }
+    else:
+        flag = {'flag': 'No'}
     return jsonify(flag)
 
-@app.route('/api/<string:image_url>/', methods=['GET'])
-def api_img_check_v2(image_url):
-    image_url = 'https://raw.githubusercontent.com/SIVA-MAINENI/covid_care_M5STICKC_IOT/master/' + image_url
-    flag = {'flag': check_image(image_url)}
+@app.route('/api/check_image_v2/<string:file>/', methods=['GET'])
+def api_img_check_v2(file):
+    print(type(file))
+    image_url = 'https://raw.githubusercontent.com/SIVA-MAINENI/covid_care_M5STICKC_IOT/master/pictures/' + str(file)
+    if check_image(image_url):
+        flag = {'flag': 'Yes' }
+    else:
+        flag = {'flag': 'No'}
     return jsonify(flag)
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
